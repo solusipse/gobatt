@@ -15,13 +15,11 @@ const (
 )
 
 var lastPercentage float64
-var lastTime float64
+
+var timeSlice [10] float64
 
 func main() {
     icon := trayIconInit()
-
-    lastPercentage = -1
-    lastTime = -1
 
     glib.TimeoutAdd(UPDATE_TIME*1000, func() bool {
         batteryStatus, batteryPercentage := updateData()
@@ -29,9 +27,9 @@ func main() {
         return true
     })
 
-    glib.TimeoutAdd(5000, func() bool {
+    glib.TimeoutAdd(10000, func() bool {
         batteryStatus, batteryPercentage := updateData()
-        getRemainingTime(batteryStatus, batteryPercentage)
+        getRemainingTime(icon, batteryStatus, batteryPercentage)
         return true
     })
 
@@ -76,7 +74,7 @@ func getGtkIcon(percent float64, status string) string {
     if status == "Discharging" {
         if percent <= 10 {
             return "battery-caution-symbolic"
-        } else if percent <= 25 {
+        } else if percent <= 20 {
             return "battery-empty-symbolic"
         } else if percent <= 45 {
             return "battery-low-symbolic"
@@ -108,38 +106,84 @@ func getGtkIcon(percent float64, status string) string {
     return "battery-missing-symbolic"
 }
 
-func getRemainingTime(status string, percent float64) int {
+func addTimeRecord(record float64) {
+    if timeSlice[9] != 0 {
+        var bufferSlice [10]float64
+        for i := 0; i < 9; i++ {
+            bufferSlice[i+1] = timeSlice[i]
+        }
+        timeSlice = bufferSlice
+        timeSlice[0] = record
+    } else {
+        for i, j := range timeSlice {
+            if j == 0 {
+                timeSlice[i] = record
+                break
+            }
+        }
+    }
+}
+
+func getAverageTime() int {
+    if timeSlice[9] != 0 {
+        var buffer float64 = 0
+        for _, j := range timeSlice {
+            buffer += j
+        }
+        return int(buffer/10)
+    }
+    return -1
+}
+
+func getRemainingTime(icon *gtk.StatusIcon, status string, percent float64) {
     /* TODO: this method */
-    if lastPercentage == -1 {
+    if lastPercentage == 0 {
         lastPercentage = percent
-        lastTime = -1
-        return -1
     }
 
     if lastPercentage > percent {
-        remainingFloat := ((lastPercentage - percent)*5000)
-        fmt.Println((remainingFloat+lastTime)/2)
+        remainingFloat := ((10 * percent)/(lastPercentage - percent))/60
+
+        addTimeRecord(remainingFloat)
+
+        if getAverageTime() == -1 {
+            fmt.Println("Estimating")
+        } else {
+            fmt.Println(getAverageTime())
+        }
 
         lastPercentage = percent
-        lastTime = remainingFloat
     }
 
-    return 5
 }
 
-func getTooltipString(percent float64, status string) string {
+func getTooltipString(percent float64, status string, time int) string {
     if percent*100 >= 99 {
         return "Battery is fully charged."
     }
 
     tooltipString := status
-    tooltipString += ": " + strconv.FormatFloat(percent*100, 'g', 2, 64) + "%\n"
-    tooltipString += "Remaining time: "
+    tooltipString += ": " + strconv.Itoa(int(percent*100)) + "%\n"
+
+    if time == -1 {
+        tooltipString += "Remaining time: estimating."
+    } else {
+        hours := time/60
+        minutes := time - hours*60
+        tooltipString += "Remaining time: " + strconv.Itoa(hours) + "h " +
+            strconv.Itoa(minutes) + "m."
+    }
+    
     return tooltipString
 }
 
+func setToolTip(icon *gtk.StatusIcon, status string, percent float64, time int) {
+    icon.SetTooltipMarkup(getTooltipString(percent, status, time))
+}
+
 func setTrayIcon(icon *gtk.StatusIcon, status string, percent float64) {
+    // TODO: don't update when icon hasn't changed
     iconName := getGtkIcon(percent, status)
     icon.SetFromIconName(iconName)
-    icon.SetTooltipMarkup(getTooltipString(percent, status))
+    setToolTip(icon, status, percent, getAverageTime())
 }
