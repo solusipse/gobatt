@@ -5,7 +5,7 @@ Lightweight battery tray icon for Linux.
 
 ![wm-battery-tray](http://solusipse.net/misc/wmbatttray/wmbatt-1.png)
 
-![wm-battery-tray](http://solusipse.net/misc/wmbatttray/wmbatt-2.png)
+![wm-battery-tray](http://solusipse.net/misc/wmbatttray/wmbatt-3.png)
 
 -------------------------------------------------------------
 
