@@ -172,13 +172,18 @@ func getRemainingTime(icon *gtk.StatusIcon, status string, percent float64) {
     }
 
     if lastPercentage > percent {
-        remainingFloat := ((10 * percent)/(lastPercentage - percent))/60
+        remaining := ((10 * percent)/(lastPercentage - percent))/60
 
-        addTimeRecord(remainingFloat)
+        addTimeRecord(remaining)
         lastPercentage = percent
     }
 
-    // TODO: Remaining time for charging.
+    if lastPercentage < percent {
+        remaining := ((10 * (1 - percent))/(percent - lastPercentage))/60
+
+        addTimeRecord(remaining)
+        lastPercentage = percent
+    }
 
 }
 
