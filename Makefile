@@ -3,10 +3,10 @@ GOFLAGS=build
 prefix=/usr/local
 
 all:
-		$(GOCOMMAND) $(GOFLAGS) wb-batt-tray.go
+		$(GOCOMMAND) $(GOFLAGS) wm-batt-tray.go
 
 install:
-		install -m 0755 wb-batt-tray $(prefix)/bin
+		install -m 0755 wm-batt-tray $(prefix)/bin
 
 clean:
-		rm -rf wb-batt-tray
+		rm -rf wm-batt-tray
