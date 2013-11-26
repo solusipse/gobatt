@@ -1,4 +1,4 @@
-wb-batt-tray
+wm-batt-tray
 ============
 
 Lightweight battery tray icon for Linux.
@@ -28,7 +28,7 @@ sudo make install
 Add this line to your custom startup script or to `.xinitrc`:
 
 ```
-wb-batt-tray
+wm-batt-tray
 ```
 
 -------------------------------------------------------------
