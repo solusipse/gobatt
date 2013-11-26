@@ -91,6 +91,7 @@ func trayIconInit() *gtk.StatusIcon {
     gtk.Init(nil)
     glib.SetApplicationName("wm-batt-tray")
 
+    // TODO: add context menu
     //popupInfo := gtk.NewMenuItemWithLabel("")
 
     icon := gtk.NewStatusIcon()
