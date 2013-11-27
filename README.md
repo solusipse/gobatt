@@ -11,14 +11,15 @@ Lightweight battery tray icon for Linux.
 
 ## Installation ##
 
-You have to install Go interpreter first. Then use Makefile.
+### Requirements ###
+
+- Go compiler (https://code.google.com/p/go/downloads/list)
+- go-gtk (https://github.com/mattn/go-gtk)
+
+### Installation ###
 
 ```
-make
-```
-
-```
-sudo make install
+git clone https://github.com/solusipse/wm-batt-tray.git && cd wm-batt-tray && make && sudo make install
 ```
 
 -------------------------------------------------------------
