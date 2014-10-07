@@ -3,7 +3,7 @@ gobatt
 
 Lightweight battery tray icon for Linux.
 
-![gobatt](http://solusipse.net/misc/gobatt.png)
+![gobatt](http://solusipse.net/misc/gobatt.gif)
 
 -------------------------------------------------------------
 
