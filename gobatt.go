@@ -89,13 +89,10 @@ func updateData() (string, float64) {
 
 func trayIconInit() *gtk.StatusIcon {
     gtk.Init(nil)
-    glib.SetApplicationName("wm-batt-tray")
-
-    // TODO: add context menu
-    //popupInfo := gtk.NewMenuItemWithLabel("")
+    glib.SetApplicationName("gobatt")
 
     icon := gtk.NewStatusIcon()
-    icon.SetTitle("wm-batt-tray")
+    icon.SetTitle("gobatt")
 
     return icon
 }
