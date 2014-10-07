@@ -2,9 +2,9 @@
 
 =======================================================
 
-wb-batt-tray - Lightweight battery tray icon for Linux.
+gobatt - Lightweight battery tray icon for Linux.
 
-Repository: https://github.com/solusipse/wm-batt-tray
+Repository: https://github.com/solusipse/gobatt
 
 =======================================================
 
