@@ -45,13 +45,14 @@ import (
 	"github.com/mattn/go-gtk/gtk"
 )
 
-var acpiPaths = []string{}
-
 const (
-	ACPIROOT    = "/sys/class/power_supply/BAT"
-	UPDATE_TIME = 1
+	// ACPIROOT constant is the common part of the battery sysfs directories
+	ACPIROOT = "/sys/class/power_supply/BAT"
+	// UPDATETIME constant is the timeout (in seconds) which will trigger new measurements.
+	UPDATETIME = 1
 )
 
+var acpiPaths = []string{}
 var lastPercentage float64
 var timeSlice [10]float64
 
@@ -62,7 +63,7 @@ func main() {
 	}
 	icon := trayIconInit()
 
-	glib.TimeoutAdd(UPDATE_TIME*1000, func() bool {
+	glib.TimeoutAdd(UPDATETIME*1000, func() bool {
 		batteryStatus, batteryPercentage := updateData()
 		setTrayIcon(icon, batteryStatus, batteryPercentage)
 		return true
