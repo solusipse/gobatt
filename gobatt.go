@@ -119,10 +119,8 @@ func getBatteryPercentage() float64 {
 		fullCap, _ := strconv.Atoi(_fc)
 		nowCap, _ := strconv.Atoi(_nc)
 		result += (float64(nowCap) / float64(fullCap))
-		fmt.Println("Result for:", acpiPath, "is:", (float64(nowCap) / float64(fullCap)))
 	}
 	result /= float64(len(acpiPaths))
-	fmt.Println("Result average:", result)
 	return result
 }
 
