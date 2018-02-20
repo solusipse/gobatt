@@ -63,6 +63,9 @@ func main() {
 	}
 	icon := trayIconInit()
 
+	batteryStatus, batteryPercentage := updateData()
+	setTrayIcon(icon, batteryStatus, batteryPercentage)
+
 	glib.TimeoutAdd(UPDATETIME*1000, func() bool {
 		batteryStatus, batteryPercentage := updateData()
 		setTrayIcon(icon, batteryStatus, batteryPercentage)
